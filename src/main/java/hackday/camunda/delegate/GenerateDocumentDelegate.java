@@ -19,9 +19,8 @@ public class GenerateDocumentDelegate implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
         String documentReference = "218140/dlcqtv";
-        String headlineTitle = (String) delegateExecution.getVariable("headlineTitle");
-        String headlineDate = (String) delegateExecution.getVariable("headlineDate");
-        String wetter = (String) delegateExecution.getVariable("wetter");
+        String headlineTitle = (String) delegateExecution.getVariable("news");
+        String wetter = (String) delegateExecution.getVariable("weather");
         Map<String, Object> replacements = new HashMap<>();
         replacements.put("headline", headlineTitle);
         replacements.put("date", LocalDateTime.now());
