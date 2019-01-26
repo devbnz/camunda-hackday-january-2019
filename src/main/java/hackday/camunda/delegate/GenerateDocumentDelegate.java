@@ -6,6 +6,10 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
 @Component
 public class GenerateDocumentDelegate implements JavaDelegate {
 
@@ -15,6 +19,10 @@ public class GenerateDocumentDelegate implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
         String documentReference = (String) delegateExecution.getVariable("documentReference");
-        connector.getDocument(documentReference);
+        Map<String, Object> replacements = new HashMap<>();
+        replacements.put("headline", "testHeadline");
+        replacements.put("date", LocalDateTime.now());
+        replacements.put("wetter", "wetter");
+        connector.mergeDocument(documentReference, replacements);
     }
 }
