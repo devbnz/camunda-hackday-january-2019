@@ -24,7 +24,7 @@ public class GenerateDocumentDelegate implements JavaDelegate {
         Map<String, Object> replacements = new HashMap<>();
         replacements.put("headline", headlineTitle);
         replacements.put("date", headlineDate);
-        replacements.put("wetter", wetter);
+        replacements.put("temperatur", wetter);
         connector.mergeDocument(documentReference, replacements);
     }
 }
