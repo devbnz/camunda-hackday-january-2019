@@ -17,7 +17,7 @@ public class GenerateDocumentDelegate implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        String documentReference = (String) delegateExecution.getVariable("documentReference");
+        String documentReference = "218140/dlcqtv";
         String headlineTitle = (String) delegateExecution.getVariable("headlineTitle");
         String headlineDate = (String) delegateExecution.getVariable("headlineDate");
         String wetter = (String) delegateExecution.getVariable("wetter");
