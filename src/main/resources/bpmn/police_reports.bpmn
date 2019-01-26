@@ -8,7 +8,9 @@
   <bpmn:process id="Process_process_reports_id" name="Process reports" isExecutable="true">
     <bpmn:sequenceFlow id="SequenceFlow_1n3z7n9" sourceRef="StartEvent_1" targetRef="Task_1rwwcyd" />
     <bpmn:sequenceFlow id="SequenceFlow_081vcf7" sourceRef="Task_1rwwcyd" targetRef="Task_1hg9pim" />
-    <bpmn:sequenceFlow id="SequenceFlow_1fm0oh8" name="empty report list" sourceRef="ExclusiveGateway_124r19g" targetRef="IntermediateThrowEvent_1hqy3qf" />
+    <bpmn:sequenceFlow id="SequenceFlow_1fm0oh8" name="empty report list" sourceRef="ExclusiveGateway_124r19g" targetRef="IntermediateThrowEvent_1hqy3qf">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${news.items == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_01q1c37" sourceRef="IntermediateThrowEvent_1hqy3qf" targetRef="Task_1rwwcyd" />
     <bpmn:sequenceFlow id="SequenceFlow_07tqp85" sourceRef="Task_021y9v5" targetRef="IntermediateThrowEvent_1hqy3qf" />
     <bpmn:sequenceFlow id="SequenceFlow_04mokrw" sourceRef="ExclusiveGateway_124r19g" targetRef="Task_021y9v5" />
@@ -29,12 +31,12 @@
         <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">1 min</bpmn:timeCycle>
       </bpmn:timerEventDefinition>
     </bpmn:intermediateCatchEvent>
-    <bpmn:serviceTask id="Task_1rwwcyd" name="Retrieve police reports">
+    <bpmn:serviceTask id="Task_1rwwcyd" name="Retrieve police reports" camunda:type="external" camunda:topic="news">
       <bpmn:incoming>SequenceFlow_1n3z7n9</bpmn:incoming>
       <bpmn:incoming>SequenceFlow_01q1c37</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_081vcf7</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:businessRuleTask id="Task_1hg9pim" name="Filter police reports">
+    <bpmn:businessRuleTask id="Task_1hg9pim" name="Filter police reports" camunda:resultVariable="filter" camunda:decisionRef="policeReportFilter">
       <bpmn:incoming>SequenceFlow_081vcf7</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0rhdxq6</bpmn:outgoing>
     </bpmn:businessRuleTask>
@@ -56,19 +58,19 @@
     <bpmn:endEvent id="EndEvent_0dqioir">
       <bpmn:incoming>SequenceFlow_0elixt0</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:serviceTask id="Task_1ci9lto" name="Retrieve weather report">
+    <bpmn:serviceTask id="Task_1ci9lto" name="Retrieve weather report" camunda:type="external" camunda:topic="weather">
       <bpmn:incoming>SequenceFlow_12hfnzz</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0772crg</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Task_11fm76u" name="Enrich information">
+    <bpmn:serviceTask id="Task_11fm76u" name="Enrich information" camunda:type="external" camunda:topic="enrich">
       <bpmn:incoming>SequenceFlow_0772crg</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_15dnuv0</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Task_0u0n8fk" name="Generate document">
+    <bpmn:serviceTask id="Task_0u0n8fk" name="Generate document" camunda:type="external" camunda:topic="generate">
       <bpmn:incoming>SequenceFlow_15dnuv0</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_038u8oz</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sendTask id="Task_0jaefrg" name="Distribute document">
+    <bpmn:sendTask id="Task_0jaefrg" name="Distribute document" camunda:type="external" camunda:topic="distribute">
       <bpmn:incoming>SequenceFlow_038u8oz</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0elixt0</bpmn:outgoing>
     </bpmn:sendTask>
