@@ -1,5 +1,7 @@
 package hackday.camunda.delegate;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hackday.camunda.webmerge.WebmergeConnector;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
@@ -20,11 +22,17 @@ public class GenerateDocumentDelegate implements JavaDelegate {
     public void execute(DelegateExecution delegateExecution) throws Exception {
         String documentReference = "218140/dlcqtv";
         String headlineTitle = (String) delegateExecution.getVariable("news");
-        String wetter = (String) delegateExecution.getVariable("weather");
+        String json = (String) delegateExecution.getVariable("weather");
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNodeRoot = objectMapper.readTree(json);
+        JsonNode jsonNodeWheather = jsonNodeRoot.get("weather");
+        String wetter = jsonNodeWheather.get("main").asText();
         Map<String, Object> replacements = new HashMap<>();
         replacements.put("headline", headlineTitle);
         replacements.put("date", LocalDateTime.now());
         replacements.put("temperatur", wetter);
         connector.mergeDocument(documentReference, replacements);
+
+        ObjectMapper
     }
 }
